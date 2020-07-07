@@ -3,7 +3,7 @@ var cardNameMap = new Map();  // ID/NAMEのMAP
 var cardGiftMap = new Map();  // ID/ギフボ内のカード数のMAP
 var cardGirlMap = new Map();  // ID/ガール情報のMAP
 
-function clearGlobalData(){
+function clearSRData(){
   cardNameMap = new Map();
   cardGiftMap = new Map();
   cardGirlMap = new Map();
@@ -13,26 +13,32 @@ function clearGlobalData(){
 function createCardHTML() {
   var obj = window.open();
   obj.document.open();
-  obj.document.write("<HTML><HEAD><meta charset = utf-8></HEAD><BODY>");
+  obj.document.write("<HTML><HEAD><meta charset = utf-8><link rel=\"stylesheet\" href=\"style.css\"></HEAD><BODY>");
 
   obj.document.write("<H1>ギフボから進展できるかも</H1>");
   obj.document.write("<TABLE border=1><TR><TD>手持ちのカード</TD><TD>ギフボのカード</TD><TD>ギフボ枚数</TD></TR>\n");
 
   for (let [key, value] of cardGirlMap) {   //ガールとギフボで進展可能な情報を出力
     if(value.evolId != 0){
-      obj.document.write("<TR><TD>"+ cardNameMap.get(key) +"</TD><TD>" + cardNameMap.get(value.evolId) + "</TD>");
-      obj.document.write("<TD>"+ cardGiftMap.get(value.evolId) +"枚持ってるよ</TD></TR>\n");
+      var exTxt = "";
+      var exStar = "";
+      if(value.limitbreakCount==1){
+        exStar = "☆";
+        exTxt  = "(EX済み)";
+      }
+       obj.document.write("<TR><TD class=girl>"+ exStar + cardNameMap.get(key) +"</TD><TD class=girl>" + cardNameMap.get(value.evolId) + "</TD>");
+       obj.document.write("<TD class=girl>"+ exTxt + cardGiftMap.get(value.evolId) +"枚持ってるよ</TD></TR>\n");
     }
   }
   for (let [key, value] of cardGiftMap) {   //ギフボだけで出力可能な情報を出力
     if(value > 1){
-      obj.document.write("<TR><TD>ないよ</TD><TD>" + cardNameMap.get(key) + "</TD>");
-      obj.document.write("<TD>ギフボに"+ value +"枚持ってるよ</TD></TR>\n");
+      obj.document.write("<TR><TD class=gift>ないよ</TD><TD class=gift>" + cardNameMap.get(key) + "</TD>");
+      obj.document.write("<TD class=gift>ギフボに"+ value +"枚持ってるよ</TD></TR>\n");
     }
   }
   obj.document.write("</TABLE></BODY></HTML>");
   obj.document.close();
-  clearGlobalData();
+  clearSRData();
 }
 
 //ガールからSR/SSR/URを取得してくる
@@ -62,7 +68,7 @@ function getCard(index){
             if(cardGiftMap.has(myArr.data.searchList[i].cardId - 1)){
               card.evolId = myArr.data.searchList[i].cardId - 1;
             }
-          }else if(card.evolution == 3 && card.limitbreakCount == false){ //カードが最終且つEXしてない場合。ID-2 のIDカードがあるかを確認する
+          }else if(card.evolution == 3){ //カードが最終。ID-2 のIDカードがあるかを確認する
             if(cardGiftMap.has(myArr.data.searchList[i].cardId - 2)){
               card.evolId = myArr.data.searchList[i].cardId - 2;
             }
@@ -130,6 +136,6 @@ function getGift(index){
 }
 
 function getSRCards() {
-  clearGlobalData();
+  clearSRData();
   getGift(1);
 }

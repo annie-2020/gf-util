@@ -57,3 +57,13 @@ button.SR{
 button.Grad{
     grid-area: GradBtn;
 }
+
+td.girl{
+    color: black;
+    background: #cfc;
+}
+
+td.gift{
+    color: black;
+    background: #ccf;
+}
