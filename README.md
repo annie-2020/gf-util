@@ -16,7 +16,7 @@
 # Installation
  
  Please see the under URL
- ...
+ https://annie-2020.github.io/gf-util/
  
  # License
  
