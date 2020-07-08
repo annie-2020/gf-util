@@ -22,18 +22,31 @@ function createCardHTML() {
     if(value.evolId != 0){
       var exTxt = "";
       var exStar = "";
-      if(value.limitbreakCount==1){
+      var girlClass = "girl";
+      if(value.limitbreakCount==1){      // EX進展済みの場合
         exStar = "☆";
         exTxt  = "(EX済み)";
+        girlClass = "girlEx";
       }
-       obj.document.write("<TR><TD class=girl>"+ exStar + cardNameMap.get(key) +"</TD><TD class=girl>" + cardNameMap.get(value.evolId) + "</TD>");
-       obj.document.write("<TD class=girl>"+ exTxt + cardGiftMap.get(value.evolId) +"枚持ってるよ</TD></TR>\n");
+       obj.document.write("<TR><TD class=" + girlClass + ">"+ exStar + cardNameMap.get(key) +"</TD><TD class=" + girlClass + ">" + cardNameMap.get(value.evolId) + "</TD>");
+       obj.document.write("<TD class=" + girlClass + ">"+ exTxt + cardGiftMap.get(value.evolId) +"枚持ってるよ</TD></TR>\n");
     }
   }
   for (let [key, value] of cardGiftMap) {   //ギフボだけで出力可能な情報を出力
     if(value > 1){
-      obj.document.write("<TR><TD class=gift>ないよ</TD><TD class=gift>" + cardNameMap.get(key) + "</TD>");
-      obj.document.write("<TD class=gift>ギフボに"+ value +"枚持ってるよ</TD></TR>\n");
+      var giftClass = "gift";
+      switch(value){
+       case 2:
+       case 3:
+        break;
+       case 4:
+        giftClass = "giftMid"; break;
+       default:
+        giftClass = "giftMax"; break;
+      }
+
+      obj.document.write("<TR><TD class=" + giftClass + ">ないよ</TD><TD class=" + giftClass + ">" + cardNameMap.get(key) + "</TD>");
+      obj.document.write("<TD class=" + giftClass + ">ギフボに"+ value +"枚持ってるよ</TD></TR>\n");
     }
   }
   obj.document.write("</TABLE></BODY></HTML>");
@@ -42,7 +55,7 @@ function createCardHTML() {
 }
 
 //ガールからSR/SSR/URを取得してくる
-// 再帰関数。
+// 再帰関数もどき。(実際には「XMLHttpRequest」の非同期関数「onreadystatechange」で途切れてる)
 function getCard(index){
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function( ) {
@@ -68,7 +81,7 @@ function getCard(index){
             if(cardGiftMap.has(myArr.data.searchList[i].cardId - 1)){
               card.evolId = myArr.data.searchList[i].cardId - 1;
             }
-          }else if(card.evolution == 3){ //カードが最終。ID-2 のIDカードがあるかを確認する
+          }else if(card.evolution == 3){ //カードが最終進展の場合。ID-2 のIDカードがあるかを確認する
             if(cardGiftMap.has(myArr.data.searchList[i].cardId - 2)){
               card.evolId = myArr.data.searchList[i].cardId - 2;
             }
@@ -83,7 +96,7 @@ function getCard(index){
         }
       }
 
-      if(index*10 < myArr.data.searchCount ){
+      if(index*10 < myArr.data.searchCount ){     // カードがまだ残っている場合、引き続き
         getCard(index+1);
       }else{
         alert("ガール(" + myArr.data.searchCount + ")読み込み完了");
@@ -98,7 +111,7 @@ function getCard(index){
 }
 
 //ギフボのカードからSR/SSRを取得してくる
-// 再帰関数。
+// 再帰関数もどき。(実際には「XMLHttpRequest」の非同期関数「onreadystatechange」で途切れてる)
 function getGift(index){
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function( ) {

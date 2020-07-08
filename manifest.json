@@ -19,9 +19,7 @@
     },
 
     "permissions": [
-      "activeTab",
       "tabs",
-      "notifications",
       "https://vcard.ameba.jp/*"
     ], 
 
