@@ -4,14 +4,14 @@
 
 # Features
  
- "gf-util" has two features.
+ "gf-util" has the features...
  * find the card that you can do "ptogress" in your gift (only SR or SSR) and the girls. 
  * "graduate" the card in your gift(only N or HN).
- 
+ * display specified rank's point.
+
 # Requirement
  
  "gf-util" can be only used as the extension of Chrome.
- 
  
 # Installation
  
