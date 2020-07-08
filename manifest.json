@@ -11,8 +11,9 @@
     },
     "background":{
       "scripts":[
-        "srClean.js",
-        "sellHN.js"
+        "js/ranking.js",
+        "js/srClean.js",
+        "js/sellHN.js"
       ],
       "persistent": false
     },
@@ -20,7 +21,6 @@
     "permissions": [
       "activeTab",
       "tabs",
-      "storage",
       "notifications",
       "https://vcard.ameba.jp/*"
     ], 

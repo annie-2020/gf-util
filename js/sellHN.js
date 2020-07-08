@@ -71,6 +71,7 @@ function getHNGirl(){
 
 function sellHNGirl() {
   clearGlobalData();
+  alert("sellHNGirl");
   getHNGirl();
 }
 

@@ -5,57 +5,45 @@
     box-sizing: border-box;
     margin: auto;  /* 中央揃え */
 }
+
 h1{
     text-align: center;  /* 中央揃え */
-    grid-area: header;
 }
+
 button{
     font-size: 16px;
     background: #666;
     margin: 8px;
     border-radius: 10px;
     padding: 10px;
-    width: 1fr;  /* Grid 特有。面白い。 */
     cursor: pointer;
 }
-input{
+input.rankNum{
     font-size: 18px;
     color: #555;
     padding: 8px;
+    width: 100px;
     height: 40px;
     grid-area: result;
-    width: 95%;  /* 左右に余白を持たせたかった。 */
 }
 body{
-    --height: 60px;  /* CSSでも変数を使えるらしい。 */
-    width: max-content;  /* 子要素の 最大幅+Margin が bodyの最大幅 */
+    width: max-content;
     padding: 8px;
     background: #333;
-    display: grid;
-    grid-template-rows: var(--height) var(--height) var(--height) var(--height) var(--height) 10px 20px;  /* See 変数の使い方 */
-    grid-template-columns: 1fr 75px 50px;
-    grid-template-areas:
-        "header header header"
-        "srBtn srBtn srBtn"
-        "GradBtn GradBtn GradBtn"
-        "result result copyBtn"
-        "...... msg msg"
-        "notice notice notice";
 }
+
 button.copy{
     width: 40px;
     height: 40px;
-    border-radius: 20px;  /* 丸にしたかった。楕円にならないようにwidth=heightになっている */
+    border-radius: 20px; 
     font-size: 24px;
     padding: 4px;
-    grid-area: copyBtn;
 }
 
 button.SR{
-    grid-area: srBtn;
 }
+
 button.Grad{
-    grid-area: GradBtn;
 }
 
 td.girl{
@@ -66,4 +54,12 @@ td.girl{
 td.gift{
     color: black;
     background: #ccf;
+}
+
+td.rankSame{
+    background: #f99;
+}
+
+td.rank{
+    background: #99f;
 }
