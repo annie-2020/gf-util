@@ -1,28 +1,37 @@
 # gf-util
- "gf-util" is the utility tool for [Girl Friend BETA ](https://vcard.ameba.jp/).
-  And the tool is the extension of Chrome.
+ 「gf-util」は、 [ガールフレンド（仮）](https://vcard.ameba.jp/)用のユーティリティツールです。
 
-# Features
+# 機能
  
- "gf-util" has the features...
- * find the card that you can do "ptogress" in your gift (only SR or SSR) and the girls. 
- * "graduate" the card in your gift(only N or HN).
- * display specified rank's point.
+ 「gf-util」は、以下の機能があります。
+ * ギフボの「SR,SSR」と手持ちのガールを比較して「進展できるもの」、「EXまで進んでるもの(卒業しても悔いはないもの)」を調べます
+ * 「特別進展ガール以外」のNとHNを卒業させます
+ * 現在進行中のイベントで、指定順位の獲得ポイントを表示します
 
 # Requirement
  
- "gf-util" can be only used as the extension of Chrome.
+  Chromeブラウザの拡張機能として動作します。
  
 # Installation
  
- Please see the under URL
- ...
+  [インストール説明](install.md)を参照してください
+
+# How to use
  
- # License
+  [使用方法](howtouse.md)を参照してください
+
+# License
  
-"gf-util" is under [MIT license](https://en.wikipedia.org/wiki/MIT_License).
+「gf-util」は [MIT license](https://en.wikipedia.org/wiki/MIT_License)です。
+ 改変等についても、本リポジトリをpublicで公開しています。
+ ご自由に改変してください。
  
- Please enjoy the "Girl Friend (BETA)"!
- 
-Thank you!
- 
+ ガールフレンドを楽しむための手助けになれば。
+
+# 注意事項
+
+  [使用方法](howto.md)を参照してください。  
+  情報取得には、いわゆるWEB上に表示される情報は、経由していません。  
+  画像などの取得がないため、転送量は少ないですが、反面高速に処理します。  
+  機能によっては、かなりの量のサーバアクセスを行いますので、使用については、「At your own risk」としてください。  
+  ※アクセス回数など、使用方法内で記載します。  
