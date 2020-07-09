@@ -32,13 +32,8 @@ body{
     background: #333;
 }
 
-button.SR{
-}
-
-button.Grad{
-}
-
-button.RankUpdate{
+div.rank{
+    border: 2px solid #fff;
 }
 
 td.girl{
