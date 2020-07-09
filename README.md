@@ -1,37 +1,37 @@
 # gf-util
- �ugf-util�v�́A [�K�[���t�����h�i���j](https://vcard.ameba.jp/)�p�̃��[�e�B���e�B�c�[���ł��B
+ 「gf-util」は、 [ガールフレンド（仮）](https://vcard.ameba.jp/)用のユーティリティツールです。
 
-# �@�\
+# 機能
  
- �ugf-util�v�́A�ȉ��̋@�\������܂��B
- * �M�t�{�́uSR,SSR�v�Ǝ莝���̃K�[�����r���āu�i�W�ł�����́v�A�uEX�܂Ői��ł����(���Ƃ��Ă������͂Ȃ�����)�v�𒲂ׂ܂�
- * �u���ʐi�W�K�[���ȊO�v��N��HN�𑲋Ƃ����܂�
- * ���ݐi�s���̃C�x���g�ŁA�w�菇�ʂ̊l���|�C���g��\�����܂�
+ 「gf-util」は、以下の機能があります。
+ * ギフボの「SR,SSR」と手持ちのガールを比較して「進展できるもの」、「EXまで進んでるもの(卒業しても悔いはないもの)」を調べます
+ * 「特別進展ガール以外」のNとHNを卒業させます
+ * 現在進行中のイベントで、指定順位の獲得ポイントを表示します
 
 # Requirement
  
-  Chrome�u���E�U�̊g���@�\�Ƃ��ē��삵�܂��B
+  Chromeブラウザの拡張機能として動作します。
  
 # Installation
  
-  [�C���X�g�[������](install.md)���Q�Ƃ��Ă�������
+  [インストール説明](install.md)を参照してください
 
 # How to use
  
-  [�g�p���@](howtouse.md)���Q�Ƃ��Ă�������
+  [使用方法](howtouse.md)を参照してください
 
 # License
  
-�ugf-util�v�� [MIT license](https://en.wikipedia.org/wiki/MIT_License)�ł��B
- ���ϓ��ɂ��Ă��A�{���|�W�g����public�Ō��J���Ă��܂��B
- �����R�ɉ��ς��Ă��������B
+「gf-util」は [MIT license](https://en.wikipedia.org/wiki/MIT_License)です。
+ 改変等についても、本リポジトリをpublicで公開しています。
+ ご自由に改変してください。
  
- �K�[���t�����h���y���ނ��߂̎菕���ɂȂ�΁B
+ ガールフレンドを楽しむための手助けになれば。
 
-# ���ӎ���
+# 注意事項
 
-  [�g�p���@](howto.md)���Q�Ƃ��Ă��������B  
-  ���擾�ɂ́A������WEB��ɕ\���������́A�o�R���Ă��܂���B  
-  �摜�Ȃǂ̎擾���Ȃ����߁A�]���ʂ͏��Ȃ��ł����A���ʍ����ɏ������܂��B  
-  �@�\�ɂ���ẮA���Ȃ�̗ʂ̃T�[�o�A�N�Z�X���s���܂��̂ŁA�g�p�ɂ��ẮA�uAt your own risk�v�Ƃ��Ă��������B  
-  ���A�N�Z�X�񐔂ȂǁA�g�p���@���ŋL�ڂ��܂��B  
+  [使用方法](howto.md)を参照してください。  
+  情報取得には、いわゆるWEB上に表示される情報は、経由していません。  
+  画像などの取得がないため、転送量は少ないですが、反面高速に処理します。  
+  機能によっては、かなりの量のサーバアクセスを行いますので、使用については、「At your own risk」としてください。  
+  ※アクセス回数など、使用方法内で記載します。  
