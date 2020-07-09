@@ -1,17 +1,31 @@
-const _eventName = [ "raid" , "raidwar" , "story" ];  // レイド,ハンターズ,ふむふむ
-const _eventId = "eventId";
+ /**
+  * 指定された順位のポイント表示
+  * @author annie
+  * @version 0.1
+  */
 
-// 取得した情報から最終結果を表示させる
+const _eventName = [ "raid" , "raidwar" , "story" ];  ///< URL上のイベント名。「レイド,ハンターズ,ふむふむ」
+const _eventId = "eventId";                           ///< イベントIDの識別プレフィックス
+
+ /**
+  * 取得した情報から最終結果を表示する
+  * @param array    取得情報の配列
+  * @param ranking  ユーザに入力された順位
+  * @author annie
+  * @version 0.1
+  */
 function createRankHTML(array , ranking) {
   var obj = window.open();
   obj.document.open();
   obj.document.write("<HTML><HEAD><meta charset = utf-8><link rel=\"stylesheet\" href=\"style.css\"></HEAD><BODY>");
 
   obj.document.write("<H1>" + ranking + "位付近のポイント</H1>");
+  ///ヘッダ出力
   obj.document.write("<TABLE border=1><TR><TD>順位</TD><TD>ポイント</TD><TD>ユーザ</TD></TR>\n");
 
-  for (element of array) {   //ガールとギフボで進展可能な情報を出力
+  for (element of array) {
     if(ranking == element.rank){
+      ///指定された順位の場合だけ、背景色を変更する
       obj.document.write("<TR><TD class=rankSame>"+ element.rank +"</TD><TD class=rankSame><B>" + element.point + "</B></TD>");
       obj.document.write("<TD class=rankSame><a href=\"https://vcard.ameba.jp/profile?userId=" + element.userId + "\">" + element.userName + "</A></TD></TR>\n");
     }else{
@@ -23,24 +37,33 @@ function createRankHTML(array , ranking) {
   obj.document.close();
 }
 
+ /**
+  * URLから確認した情報をもとに、表示するための情報をAJAXからJSONで取得する
+  * @param eventId      イベントID。各イベントには開始ごとに連番でIDが与えられる
+  * @param eventName    イベント名。配列にすべて記載する
+  * @param ranking      ユーザに入力された順位
+  * @author annie
+  * @version 0.1
+  */
 function getDisplayData(eventId , eventName , ranking){
-  var pageNum = Math.floor( (ranking + 9) / 10);
-  var url = "https://vcard.ameba.jp/" + eventName + "/ajax/ranking-search?eventId=" + eventId + "&page=" + pageNum;
+  var pageNum = Math.ceil( ranking / 10);    ///< 与えられた順位が表示されるページ。「1～10」→ 1になるように小数点切り上げ。
+  var url = "https://vcard.ameba.jp/" + eventName + "/ajax/ranking-search?eventId=" + eventId + "&page=" + pageNum;  ///< JSONを取得するURL
 
   var xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = function( ) {
+  xhr.onreadystatechange = function( ) {  ///< HTTP アクセス状態変更イベント
     if ( xhr.readyState == 4 && xhr.status == 200) {
       var myArr = JSON.parse(xhr.responseText);
 
       if(0 < myArr.data.rankings.list.length ){
         var array = [];
+        /// JSONから必要な情報を取得する
         for(element of myArr.data.rankings.list ){
           var obj = new Object();
-          obj.clubName = element.clubName;
-          obj.point = element.point;
-          obj.rank = element.rank;
-          obj.userId = element.userId;
-          obj.userName = element.userName;
+          obj.clubName = element.clubName;      ///< 部活名
+          obj.point = element.point;            ///< 獲得ポイント
+          obj.rank = element.rank;              ///< 順位
+          obj.userId = element.userId;          ///< ユーザID
+          obj.userName = element.userName;      ///< ユーザ名
           array.push(obj);
         }
         createRankHTML(array , ranking);
@@ -52,8 +75,16 @@ function getDisplayData(eventId , eventName , ranking){
   xhr.send( ) ;
 }
 
+ /**
+  * URLから確認した情報をもとに、表示するための情報をAJAXからJSONで取得する
+  * @param eventId      イベントID。各イベントには開始ごとに連番でIDが与えられる
+  * @param eventName    イベント名。配列にすべて記載する
+  * @param ranking      ユーザに入力された順位
+  * @author annie
+  * @version 0.1
+  */
 function getEventParam( url , ranking){
-  var urlSprit = url.split(/[\?\/]/);
+  var urlSprit = url.split(/[\?\/\&]/);  ///< 「?」「/」「&」でURLを分割する。フォルダ名とファイル名、引数で分割される
   var eventName = "";
   var eventId = "";
   for(split of urlSprit){
@@ -71,26 +102,42 @@ function getEventParam( url , ranking){
       }
     }
   }
+
   if(eventName != "" && eventId != ""){
     getDisplayData(eventId , eventName , ranking);
+  }else{
+    /// エラー時の処理
+    alert("イベント名( " + eventName + " )かイベントID( " + eventId + " )が取得できませんでした");
   }
 }
 
-//イベント情報を取得する
+ /**
+  * イベント情報を取得する
+  * @param ranking      ユーザに入力された順位
+  * @author annie
+  * @version 0.1
+  */
 function getEvent(ranking){
-  chrome.tabs.query({}, function (tabs) {
+  chrome.tabs.query({}, function (tabs) {    ///< 全タブを取得する
     for (tab of tabs) {
-      if(tab.url.indexOf("vcard") != -1 && tab.url.indexOf(_eventId) != -1){  // GFのイベント画面
+      if(tab.url.indexOf("vcard") != -1 && tab.url.indexOf(_eventId) != -1){  // URLに「vcard」かつ「eventId」が入っている個所を確認する
         getEventParam(tab.url , ranking);
         return;
       }
     }
+    /// エラー時の処理
     alert("イベントページが見つかりません。URLに\"eventId\"が含まれているか確認してください");
   });
 }
 
+ /**
+  * 外部から呼ばれる、順位取得処理を開始する
+  * @param ranking      ユーザに入力された順位
+  * @author annie
+  * @version 0.1
+  */
 function getRank(ranking) {
-  if(ranking < 1 || isNaN(ranking)){
+  if(ranking < 1 || isNaN(ranking)){  ///< エラーチェック。数値が-1以下、もしくは文字列(数値変換できずNaNになった)場合、処理終了
     alert("1以上の値を入れてください");
     return;
   }
