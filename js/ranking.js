@@ -15,11 +15,12 @@ const _eventId = "eventId";                           ///< イベントIDの識�
   * @version 0.1
   */
 function createRankHTML(array , ranking) {
-  var obj = window.open();
+  var obj = window.open('about:blank',"eventTab");
   obj.document.open();
   obj.document.write("<HTML><HEAD><meta charset = utf-8><link rel=\"stylesheet\" href=\"style.css\"></HEAD><BODY>");
 
   obj.document.write("<H1>" + ranking + "位付近のポイント</H1>");
+  obj.document.write("<BUTTON class='RankUpdate'>更新</BUTTON>");
   ///ヘッダ出力
   obj.document.write("<TABLE border=1><TR><TD>順位</TD><TD>ポイント</TD><TD>ユーザ</TD></TR>\n");
 
@@ -35,6 +36,9 @@ function createRankHTML(array , ranking) {
   }
   obj.document.write("</TABLE></BODY></HTML>");
   obj.document.close();
+  obj.document.querySelector('button.RankUpdate').addEventListener('click',()=>{
+    getRank(ranking);
+  });
 }
 
  /**
