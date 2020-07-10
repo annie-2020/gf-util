@@ -23,10 +23,10 @@
 # License
  
 「gf-util」は [MIT license](https://en.wikipedia.org/wiki/MIT_License)です。
- 改変等についても、本リポジトリをpublicで公開しています。
+ 本リポジトリをpublicで公開しています。
  ご自由に改変してください。
- 
- ガールフレンドを楽しむための手助けになれば。
+
+ ガールフレンド(仮) を楽しむ手助けになれば。
 
 # 注意事項
 
