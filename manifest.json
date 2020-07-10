@@ -23,8 +23,8 @@
       "https://vcard.ameba.jp/*"
     ], 
 
-    "author": "ANNIE",  // 作成者（任意）
+    "author": "ANNIE",
     "incognito" : "split",
 
-    "manifest_version": 2  // マニフェストのバージョン（必須。現在は2が推奨されている。）
+    "manifest_version": 2
 }

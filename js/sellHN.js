@@ -51,7 +51,7 @@ function sellCard(cardGiftId){
     }
   }
 
-  var newUrl = 'https://vcard.ameba.jp/card/sell-gift-confirm?sellGiftCardIds=' + stringData;    ///< 卒業用手続きページ
+  var newUrl = 'https://vcard.ameba.jp/card/sell-gift-confirm?sellGiftCardIds=' + stringData;    ///< 卒業用手続きページ。tokenを取得するために必要
 
   xhr.open( 'GET', newUrl , true ) ;
   xhr.withCredentials  = true;
