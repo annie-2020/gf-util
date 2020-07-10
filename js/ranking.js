@@ -4,7 +4,8 @@
   * @version 0.1
   */
 
-const _eventName = [ "raid" , "raidwar" , "story" ];  ///< URL上のイベント名。「レイド,ハンターズ,ふむふむ」
+const _eventName = [ "raid" , "raidwar" , "story" , "clubcup" , "championship"];
+                                                      ///< URL上のイベント名。「レイド,ハンターズ,ふむふむ,対抗戦,カリスマ」
 const _eventId = "eventId";                           ///< イベントIDの識別プレフィックス
 
  /**

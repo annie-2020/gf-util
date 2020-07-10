@@ -33,7 +33,7 @@ function createCardHTML() {
   obj.document.write("<HTML><HEAD><meta charset = utf-8><link rel=\"stylesheet\" href=\"style.css\"></HEAD><BODY>");
 
   obj.document.write("<H1>ギフボから進展できるかも</H1>");
-  obj.document.write("<TABLE border=1><TR><TD>手持ちのカード</TD><TD>ギフボのカード</TD><TD>ギフボ枚数</TD></TR>\n");
+  obj.document.write("<TABLE border=1><TR><TD>手持ちガール</TD><TD>ギフボのガール</TD><TD>ギフボ枚数</TD></TR>\n");
 
   for (let [key, value] of cardGirlMap) {   /// ガールとギフボで進展可能な情報を出力
     if(value.evolId != 0){
@@ -46,7 +46,7 @@ function createCardHTML() {
         girlClass = "girlEx";
       }
        obj.document.write("<TR><TD class=" + girlClass + ">"+ exStar + cardNameMap.get(key) +"</TD><TD class=" + girlClass + ">" + cardNameMap.get(value.evolId) + "</TD>");
-       obj.document.write("<TD class=" + girlClass + ">"+ exTxt + cardGiftMap.get(value.evolId) +"枚持ってるよ</TD></TR>\n");
+       obj.document.write("<TD class=" + girlClass + ">"+ exTxt + cardGiftMap.get(value.evolId) +"枚</TD></TR>\n");
     }
   }
   for (let [key, value] of cardGiftMap) {   //ギフボだけで出力可能な情報を出力
@@ -63,7 +63,7 @@ function createCardHTML() {
       }
 
       obj.document.write("<TR><TD class=" + giftClass + ">ないよ</TD><TD class=" + giftClass + ">" + cardNameMap.get(key) + "</TD>");
-      obj.document.write("<TD class=" + giftClass + ">ギフボに"+ value +"枚持ってるよ</TD></TR>\n");
+      obj.document.write("<TD class=" + giftClass + ">ギフボに"+ value +"枚</TD></TR>\n");
     }
   }
   obj.document.write("</TABLE></BODY></HTML>");
@@ -95,7 +95,7 @@ function getCard(index){
 
         if(!cardGirlMap.has(myArr.data.searchList[i].cardId) ){            /// ガールのカードの情報を取得する
           var card = new Object();
-          card.limitbreakCount = myArr.data.searchList[i].limitbreakCount; ///< EX進展
+          card.limitbreakCount = myArr.data.searchList[i].limitbreakCount; ///< EX進展。1がEX進展
           card.evolution       = myArr.data.searchList[i].evolution;       ///< 1 1進展 3 最終進展
           card.rarity          = myArr.data.searchList[i].rarity;          ///< RARITY 5:SR、6:SSR、7:UR
           card.evolId          = 0;                                        ///< 進展可能なID
@@ -132,6 +132,9 @@ function getCard(index){
     }
   }
 
+  /// 手持ちカードから対象を取得する
+  /// 「rarities=SS_RARE&rarities=U_RARE&rarities=S_RARE」→ 見た通り
+  /// 「sortType=DATETIME&sortDirection=DESC」→日付順、新しいもの順。条件は何でもいいが、ソートしてることが重要。
   var url = 'https://vcard.ameba.jp/card/ajax/card-list-search?userCardListType=GIRLS_PAGE&sortType=DATETIME&sortDirection=DESC&exceptLeaderCard=true&rarities=SS_RARE&rarities=U_RARE&rarities=S_RARE&page=' + index;
   xhr.open( 'GET', url, true ) ;
   xhr.send( ) ;
@@ -178,6 +181,8 @@ function getGift(index){
     }
   }
 
+  /// ギフボから「特別指導ガール以外」「レアリティSR,SSR」を対象に検索を実施する(結果はJSON)
+  /// 「other=4」→「特別指導ガール以外」、「rarities=5%2c6」→「レアリティSR,SSR」
   var url = 'https://vcard.ameba.jp/giftbox/gift-search?sort=0&other=4&sphere=0&rarities=5%2c6&selectedGift=1&page=' + index;
   xhr.open( 'GET', url, true ) ;
   xhr.send( ) ;
