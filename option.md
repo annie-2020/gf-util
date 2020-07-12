@@ -14,6 +14,7 @@
  ![option](./images/option.png "option")    
 
 オプションは以下の通りです  
+設定終了したら、画面下の「SAVE」を押してください  
 
  1. 進展チェック
 	- HR/SR/SSRの選択ができます。デフォルトは「SR/SSR」です
