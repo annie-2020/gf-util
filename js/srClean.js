@@ -245,10 +245,16 @@ function getGift(index){
   * @version 0.1
   */
 function getSRCards() {
+
+  //初期化されていなければ、初期化する
+  if(null == localStorage["EX-HR"])   localStorage["EX-HR"]   = 0;
+  if(null == localStorage["EX-SR"])   localStorage["EX-SR"]   = 1;
+  if(null == localStorage["EX-SSR"])  localStorage["EX-SSR"]  = 1;
+
   var strData = "";
-  if( localStorage["EX-HR"]  != "0" ) strData = strData + "HR , ";
-  if( localStorage["EX-SR"] != "0" ) strData = strData + "SR , ";
-  if( localStorage["EX-SSR"]  != "0" ) strData = strData + "SSR";
+  if( localStorage["EX-HR"]  != "0" ) strData = "HR, ";
+  if( localStorage["EX-SR"]  != "0" ) strData = strData + "SR, ";
+  if( localStorage["EX-SSR"] != "0" ) strData = strData + "SSR";
 
   if(strData == ""){
      alert("選択されていません。処理を終了します");

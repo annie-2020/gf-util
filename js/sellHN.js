@@ -105,6 +105,12 @@ function getHNGirl(){
   * @version 0.1
   */
 function sellHNGirl() {
+
+  // 初期化されていなければ、初期化する
+  if(null == localStorage["GRAD-N"])  localStorage["GRAD-N"]  = 1;
+  if(null == localStorage["GRAD-HN"]) localStorage["GRAD-HN"] = 1;
+  if(null == localStorage["GRAD-R"])  localStorage["GRAD-R"]  = 0;
+
   var strData = "";
   if( localStorage["GRAD-N"]  != "0" ) strData = "N, ";
   if( localStorage["GRAD-HN"] != "0" ) strData = strData + "HN, ";
