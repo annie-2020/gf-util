@@ -5,8 +5,8 @@
 # Features
  
  "gf-util" has the features...
- * find the card that you can do "ptogress" in your gift (only SR or SSR) and the girls. 
- * "graduate" the card in your gift(only N or HN).
+ * find the card that you can do "ptogress" in your gift (HR or SR or SSR) and the girls. 
+ * "graduate" the card in your gift(N or HN or R).
  * display specified rank's point.
 
 # Requirement
