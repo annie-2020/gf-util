@@ -83,7 +83,18 @@ function getHNGirl(){
 
   /// ギフボから「特別指導ガール以外」「レアリティN,HN」を対象に検索を実施する(結果はJSON)
   /// 「other=4」→「特別指導ガール以外」、「rarities=1%2c2」→「レアリティN,HN」
-  var url = 'https://vcard.ameba.jp/giftbox/gift-search?sort=0&other=4&sphere=0&rarities=1%2c2&selectedGift=1&page=1';
+  var strRarity = "";
+  if( localStorage["GRAD-N"]  != "0" ) strRarity = "1";
+  if( localStorage["GRAD-HN"] != "0" ){
+    if(strRarity != "") strRarity = strRarity + "%2c";
+    strRarity = strRarity + "2";
+  }
+  if( localStorage["GRAD-R"]  != "0" ){
+    if(strRarity != "") strRarity = strRarity + "%2c";
+    strRarity = strRarity + "3";
+  }
+
+  var url = 'https://vcard.ameba.jp/giftbox/gift-search?sort=0&other=4&sphere=0&rarities=' + strRarity + '&selectedGift=1&page=1';
   xhr.open( 'GET', url, true ) ;
   xhr.send( ) ;
 }
@@ -94,5 +105,21 @@ function getHNGirl(){
   * @version 0.1
   */
 function sellHNGirl() {
-  getHNGirl();
+  var strData = "";
+  if( localStorage["GRAD-N"]  != "0" ) strData = strData + "N, ";
+  if( localStorage["GRAD-HN"] != "0" ) strData = strData + "HN, ";
+  if( localStorage["GRAD-R"]  != "0" ) strData = strData + "R";
+
+  if(strData == ""){
+     alert("選択されていません。処理を終了します");
+     return;
+  }
+
+  strData = strData + "のガールを卒業させますか？";
+
+  if(confirm(strData)){
+    getHNGirl();
+  }else{
+    alert("処理を終了します");
+  }
 }

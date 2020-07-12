@@ -25,6 +25,7 @@
 
     "author": "ANNIE",
     "incognito" : "split",
+    "options_page": "option.html",
 
     "manifest_version": 2
 }

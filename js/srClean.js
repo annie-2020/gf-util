@@ -33,37 +33,60 @@ function createCardHTML() {
   obj.document.write("<HTML><HEAD><meta charset = utf-8><link rel=\"stylesheet\" href=\"style.css\"></HEAD><BODY>");
 
   obj.document.write("<H1>ギフボから進展できるかも</H1>");
-  obj.document.write("<TABLE border=1><TR><TD>手持ちガール</TD><TD>ギフボのガール</TD><TD>ギフボ枚数</TD></TR>\n");
+  obj.document.write("<TABLE border=1><TR><TD colspan=2>手持ちガール</TD><TD colspan=2>ギフボのガール</TD><TD>ギフボ枚数</TD></TR>\n");
 
   for (let [key, value] of cardGirlMap) {   /// ガールとギフボで進展可能な情報を出力
     if(value.evolId != 0){
       var exTxt = "";
       var exStar = "";
-      var girlClass = "girl";
+      var girlTag = "<TD class=girl>";
       if(value.limitbreakCount==1){      // EX進展済みの場合
         exStar = "☆";
         exTxt  = "(EX済み)";
-        girlClass = "girlEx";
+        girlTag = "<TD class=girlEx>";
       }
-       obj.document.write("<TR><TD class=" + girlClass + ">"+ exStar + cardNameMap.get(key) +"</TD><TD class=" + girlClass + ">" + cardNameMap.get(value.evolId) + "</TD>");
-       obj.document.write("<TD class=" + girlClass + ">"+ exTxt + cardGiftMap.get(value.evolId) +"枚</TD></TR>\n");
+      
+      var strRarity = "SR";
+      switch(value.rarity){
+      case 4: strRarity = "HR";  break; ///< HR
+      case 6: strRarity = "SSR"; break; ///< SSR
+      case 7: strRarity = "UR";  break; ///< UR
+      default:break;
+      }
+      var strGiftRarity = "SR";
+      switch(cardGiftMap.get(value.evolId).rarity){
+      case 4: strGiftRarity = "HR";  break; ///< HR
+      case 6: strGiftRarity = "SSR"; break; ///< SSR
+      case 7: strGiftRarity = "UR";  break; ///< UR
+      default:break;
+      }
+
+      obj.document.write( "<TR>" + girlTag + strRarity + "</TD>" + girlTag + exStar + cardNameMap.get(key) +
+                          "</TD>" + girlTag + strGiftRarity + "</TD>" + girlTag + cardNameMap.get(value.evolId) +
+                          "</TD>" + girlTag + exTxt + cardGiftMap.get(value.evolId).count +"枚</TD></TR>\n");
     }
   }
   for (let [key, value] of cardGiftMap) {   //ギフボだけで出力可能な情報を出力
-    if(value > 1){
-      var giftClass = "gift";
-      switch(value){
-       case 2:
-       case 3:
-        break;
-       case 4:
-        giftClass = "giftMid"; break;
-       default:
-        giftClass = "giftMax"; break;
+    if(value.count > 1){
+      var giftTag = "<TD class=gift>";
+      switch(value.count){
+        case 2:
+        case 3:
+         break;
+        case 4:
+          giftTag = "<TD class=giftMid>"; break;
+        default:
+          giftTag = "<TD class=giftMax>"; break;
       }
-
-      obj.document.write("<TR><TD class=" + giftClass + ">ないよ</TD><TD class=" + giftClass + ">" + cardNameMap.get(key) + "</TD>");
-      obj.document.write("<TD class=" + giftClass + ">ギフボに"+ value +"枚</TD></TR>\n");
+      var strGiftRarity = "SR";
+      switch(value.rarity){
+        case 4: strGiftRarity = "HR";  break; ///< HR
+        case 6: strGiftRarity = "SSR"; break; ///< SSR
+        case 7: strGiftRarity = "UR";  break; ///< UR
+        default:break;
+      }
+      obj.document.write( "<TR>" + giftTag + "</TD>"+ giftTag + "ないよ</TD>" + giftTag + strGiftRarity + "</TD>"+ 
+                          giftTag + cardNameMap.get(key) + "</TD>" + giftTag + "ギフボに"+ value.count +"枚</TD></TR>\n");
     }
   }
   obj.document.write("</TABLE></BODY></HTML>");
@@ -132,10 +155,20 @@ function getCard(index){
     }
   }
 
+  var strRarity = "";
+  if( localStorage["EX-HR"] != "0" ) strRarity ="rarities=HIGH_RARE&rarities=S_RARE&";
+  if( localStorage["EX-SR"] != "0" ){
+    if(localStorage["EX-HR"] == "0" ) strRarity = "rarities=S_RARE&";
+    strRarity = strRarity + "rarities=SS_RARE&";
+  }
+  if( localStorage["EX-SSR"]  != "0" ){
+    if(localStorage["EX-SR"] == "0" ) strRarity = strRarity + "rarities=SS_RARE&";
+    strRarity = strRarity + "rarities=U_RARE&";
+  }
   /// 手持ちカードから対象を取得する
   /// 「rarities=SS_RARE&rarities=U_RARE&rarities=S_RARE」→ 見た通り
   /// 「sortType=DATETIME&sortDirection=DESC」→日付順、新しいもの順。条件は何でもいいが、ソートしてることが重要。
-  var url = 'https://vcard.ameba.jp/card/ajax/card-list-search?userCardListType=GIRLS_PAGE&sortType=DATETIME&sortDirection=DESC&exceptLeaderCard=true&rarities=SS_RARE&rarities=U_RARE&rarities=S_RARE&page=' + index;
+  var url = 'https://vcard.ameba.jp/card/ajax/card-list-search?userCardListType=GIRLS_PAGE&sortType=DATETIME&sortDirection=DESC&exceptLeaderCard=true&' + strRarity + 'page=' + index;
   xhr.open( 'GET', url, true ) ;
   xhr.send( ) ;
 }
@@ -156,15 +189,16 @@ function getGift(index){
       var myArr = JSON.parse(xhr.responseText);                             ///< JSON読み込み
       for(var i = 0 ; i < myArr.data.results.length ; ++i){                 ///< 1ページに表示するカードの数(最大10枚)
         if(!cardGiftMap.has(myArr.data.results[i].typeId)){                 ///< 同一IDのカードの枚数を数える
-          cardGiftMap.set(myArr.data.results[i].typeId , 1);
-        }else{
-          var tmpVal = cardGiftMap.get(myArr.data.results[i].typeId);
-          cardGiftMap.set(myArr.data.results[i].typeId , tmpVal+1);
-        }
-
-        /// IDと名前のMAPを作成
-        if(!cardNameMap.has(myArr.data.results[i].typeId)){
+          var card = new Object();
+          card.rarity = myArr.data.results[i].rarity;
+          card.count = 1;
+          cardGiftMap.set(myArr.data.results[i].typeId , card);
+          /// IDと名前のMAPを作成
           cardNameMap.set(myArr.data.results[i].typeId , myArr.data.results[i].name);
+        }else{
+          var card = cardGiftMap.get(myArr.data.results[i].typeId);
+          card.count = card.count + 1;
+          cardGiftMap.set(myArr.data.results[i].typeId , card);
         }
 
         //使っていないパラメータだけど、メモ。
@@ -175,15 +209,31 @@ function getGift(index){
       if(index*10 < myArr.data.searchCount ){ ///< まだ存在する場合、同関数を呼び出す
         getGift(index+1);
       }else{
-        alert("ギフトカード(" + myArr.data.searchCount + ")枚読み込み完了");
+        if(myArr.data.searchCount > 0){
+          alert("ギフトカード(" + myArr.data.searchCount + ")枚読み込み完了");
+        }else{
+          alert("ギフボに選択レアリティのカードがありません。終了します" );
+          return;
+        }
         getCard(1);
       }
     }
   }
 
+  var strRarity = "";
+  if( localStorage["EX-HR"] != "0" ) strRarity ="4";
+  if( localStorage["EX-SR"] != "0" ){
+    if(strRarity != "") strRarity = strRarity + "%2c";
+    strRarity = strRarity + "5";
+  }
+  if( localStorage["EX-SSR"] != "0" ){
+    if(strRarity != "") strRarity = strRarity + "%2c";
+    strRarity = strRarity + "6";
+  }
+
   /// ギフボから「特別指導ガール以外」「レアリティSR,SSR」を対象に検索を実施する(結果はJSON)
   /// 「other=4」→「特別指導ガール以外」、「rarities=5%2c6」→「レアリティSR,SSR」
-  var url = 'https://vcard.ameba.jp/giftbox/gift-search?sort=0&other=4&sphere=0&rarities=5%2c6&selectedGift=1&page=' + index;
+  var url = 'https://vcard.ameba.jp/giftbox/gift-search?sort=0&other=4&sphere=0&rarities='+ strRarity + '&selectedGift=1&page=' + index;
   xhr.open( 'GET', url, true ) ;
   xhr.send( ) ;
 }
@@ -194,6 +244,22 @@ function getGift(index){
   * @version 0.1
   */
 function getSRCards() {
-  clearSRData();
-  getGift(1);
+  var strData = "";
+  if( localStorage["EX-HR"]  != "0" ) strData = strData + "HR , ";
+  if( localStorage["EX-SR"] != "0" ) strData = strData + "SR , ";
+  if( localStorage["EX-SSR"]  != "0" ) strData = strData + "SSR";
+
+  if(strData == ""){
+     alert("選択されていません。処理を終了します");
+     return;
+  }
+
+  strData = strData + "のガールの進展可能確認をしますか？";
+
+  if(confirm(strData)){
+    clearSRData();
+    getGift(1);
+  }else{
+    alert("処理を終了します");
+  }
 }
