@@ -1,3 +1,15 @@
+ /**
+  * 各種設定
+  * @author annie
+  * @version 0.2
+  */
+
+
+ /**
+  * 設定画面を開いた際の設定
+  * @author annie
+  * @version 0.2
+  */
 window.onload = function(){
     // initialize
     load_setting();
@@ -9,9 +21,14 @@ window.onload = function(){
     });
 }
 
+ /**
+  * 設定画面を開いた際の設定詳細
+  * @author annie
+  * @version 0.2
+  */
 function load_setting()
 {
-  { //デフォルト値確認
+  { //デフォルト値確認設定
     if(null == localStorage["EX-HR"])   localStorage["EX-HR"]   = 0;
     if(null == localStorage["EX-SR"])   localStorage["EX-SR"]   = 1;
     if(null == localStorage["EX-SSR"])  localStorage["EX-SSR"]  = 1;
@@ -28,6 +45,11 @@ function load_setting()
   document.getElementById("GRAD-R").checked  = Boolean(parseInt(localStorage["GRAD-R"]));
 }
 
+ /**
+  * 設定保存
+  * @author annie
+  * @version 0.2
+  */
 function save_setting()
 {
   localStorage["EX-HR"]   = document.getElementById("EX-HR").checked ? 1 : 0;

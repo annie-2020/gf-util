@@ -106,7 +106,7 @@ function getHNGirl(){
   */
 function sellHNGirl() {
   var strData = "";
-  if( localStorage["GRAD-N"]  != "0" ) strData = strData + "N, ";
+  if( localStorage["GRAD-N"]  != "0" ) strData = "N, ";
   if( localStorage["GRAD-HN"] != "0" ) strData = strData + "HN, ";
   if( localStorage["GRAD-R"]  != "0" ) strData = strData + "R";
 

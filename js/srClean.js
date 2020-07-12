@@ -47,13 +47,13 @@ function createCardHTML() {
       }
       
       var strRarity = "SR";
-      switch(value.rarity){
+      switch(value.rarity){   /// ガールのレアリティを文字列に
       case 4: strRarity = "HR";  break; ///< HR
       case 6: strRarity = "SSR"; break; ///< SSR
       case 7: strRarity = "UR";  break; ///< UR
       default:break;
       }
-      var strGiftRarity = "SR";
+      var strGiftRarity = "SR";   /// ギフトのレアリティを文字列に
       switch(cardGiftMap.get(value.evolId).rarity){
       case 4: strGiftRarity = "HR";  break; ///< HR
       case 6: strGiftRarity = "SSR"; break; ///< SSR
@@ -69,7 +69,7 @@ function createCardHTML() {
   for (let [key, value] of cardGiftMap) {   //ギフボだけで出力可能な情報を出力
     if(value.count > 1){
       var giftTag = "<TD class=gift>";
-      switch(value.count){
+      switch(value.count){ /// ギフボ内の数によりテーブルの色を変える
         case 2:
         case 3:
          break;
@@ -79,7 +79,7 @@ function createCardHTML() {
           giftTag = "<TD class=giftMax>"; break;
       }
       var strGiftRarity = "SR";
-      switch(value.rarity){
+      switch(value.rarity){   /// ギフトのレアリティを文字列に
         case 4: strGiftRarity = "HR";  break; ///< HR
         case 6: strGiftRarity = "SSR"; break; ///< SSR
         case 7: strGiftRarity = "UR";  break; ///< UR
@@ -95,7 +95,7 @@ function createCardHTML() {
 }
 
  /**
-  * ガールからSR/SSR/URを取得して、進展可能カードがあるかを確認する
+  * ガールからメニューで指定したレアリティのカードを取得して、進展可能カードがあるかを確認する
   *
   * 再帰関数もどき。(実際には「XMLHttpRequest」の非同期関数「onreadystatechange」で途切れてる)
   * 処理はとても簡単
@@ -156,12 +156,13 @@ function getCard(index){
   }
 
   var strRarity = "";
-  if( localStorage["EX-HR"] != "0" ) strRarity ="rarities=HIGH_RARE&rarities=S_RARE&";
-  if( localStorage["EX-SR"] != "0" ){
+  if( localStorage["EX-HR"] != "0" ) /// HR指定なら、手持ちからはHR/SRを調べる
+    strRarity ="rarities=HIGH_RARE&rarities=S_RARE&";
+  if( localStorage["EX-SR"] != "0" ){ /// SR指定なら、手持ちからはSR/SSRを調べる
     if(localStorage["EX-HR"] == "0" ) strRarity = "rarities=S_RARE&";
     strRarity = strRarity + "rarities=SS_RARE&";
   }
-  if( localStorage["EX-SSR"]  != "0" ){
+  if( localStorage["EX-SSR"]  != "0" ){ /// SSR指定なら、手持ちからはSSR/URを調べる
     if(localStorage["EX-SR"] == "0" ) strRarity = strRarity + "rarities=SS_RARE&";
     strRarity = strRarity + "rarities=U_RARE&";
   }
@@ -174,7 +175,7 @@ function getCard(index){
 }
 
  /**
-  * ギフボのカードからSR/SSRを取得してくる
+  * ギフボのカードからメニューで指定したレアリティのカードを取得してくる
   *
   * 再帰関数もどき。(実際には「XMLHttpRequest」の非同期関数「onreadystatechange」で途切れてる)
   *
@@ -239,7 +240,7 @@ function getGift(index){
 }
 
  /**
-  * 外部から呼ばれる、SR以上のカードを収集する
+  * 外部から呼ばれる、メニューで指定したレアリティのカードを収集する
   * @author annie
   * @version 0.1
   */
