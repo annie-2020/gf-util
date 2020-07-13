@@ -4,6 +4,11 @@
   * @version 0.1
   */
 
+
+var _checkN   = false;       ///< Nが卒業対象かどうか
+var _checkHN  = false;       ///< HNが卒業対象かどうか
+var _checkR   = false;       ///< Rが卒業対象かどうか
+
  /**
   * 終了通知
   * @author annie
@@ -84,12 +89,12 @@ function getHNGirl(){
   /// ギフボから「特別指導ガール以外」「レアリティN,HN」を対象に検索を実施する(結果はJSON)
   /// 「other=4」→「特別指導ガール以外」、「rarities=1%2c2」→「レアリティN,HN」
   var strRarity = "";
-  if( localStorage["GRAD-N"]  != "0" ) strRarity = "1";
-  if( localStorage["GRAD-HN"] != "0" ){
+  if( _checkN ) strRarity = "1";
+  if( _checkHN ){
     if(strRarity != "") strRarity = strRarity + "%2c";
     strRarity = strRarity + "2";
   }
-  if( localStorage["GRAD-R"]  != "0" ){
+  if( _checkR ){
     if(strRarity != "") strRarity = strRarity + "%2c";
     strRarity = strRarity + "3";
   }
@@ -111,10 +116,15 @@ function sellHNGirl() {
   if(null == localStorage["GRAD-HN"]) localStorage["GRAD-HN"] = 1;
   if(null == localStorage["GRAD-R"])  localStorage["GRAD-R"]  = 0;
 
+  //処理中のストレージ変更に対処するため、メンバ変数化
+  _checkN   = ( localStorage["GRAD-N"]  != "0" );
+  _checkHN  = ( localStorage["GRAD-HN"]  != "0" );
+  _checkR   = ( localStorage["GRAD-R"]  != "0" );
+
   var strData = "";
-  if( localStorage["GRAD-N"]  != "0" ) strData = "N, ";
-  if( localStorage["GRAD-HN"] != "0" ) strData = strData + "HN, ";
-  if( localStorage["GRAD-R"]  != "0" ) strData = strData + "R";
+  if( _checkN )  strData = "N, ";
+  if( _checkHN ) strData = strData + "HN, ";
+  if( _checkR )  strData = strData + "R";
 
   if(strData == ""){
      alert("選択されていません。処理を終了します");

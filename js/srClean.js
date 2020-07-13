@@ -7,6 +7,9 @@
 var cardNameMap = new Map();  ///< ID/NAMEのMAP
 var cardGiftMap = new Map();  ///< ID/ギフボ内のカード数のMAP
 var cardGirlMap = new Map();  ///< ID/ガール情報のMAP
+var _checkHR  = false;       ///< HRがチェック対象かどうか
+var _checkSR  = false;       ///< SRがチェック対象かどうか
+var _checkSSR = false;       ///< SSRがチェック対象かどうか
 
  /**
   * メンバー変数をクリア
@@ -18,6 +21,9 @@ function clearSRData(){
   cardNameMap = new Map();
   cardGiftMap = new Map();
   cardGirlMap = new Map();
+  _checkHR  = false;
+  _checkSR  = false;
+  _checkSSR = false;
 }
 
  /**
@@ -44,6 +50,8 @@ function createCardHTML() {
         exStar = "☆";
         exTxt  = "(EX済み)";
         girlTag = "<TD class=girlEx>";
+      }else if(value.evolution == 2){   // 2進の場合
+        exStar = "+";
       }
       
       var strRarity = "SR";
@@ -61,7 +69,7 @@ function createCardHTML() {
       default:break;
       }
 
-      obj.document.write( "<TR>" + girlTag + strRarity + "</TD>" + girlTag + exStar + cardNameMap.get(key) +
+      obj.document.write( "<TR>" + girlTag + strRarity + exStar + "</TD>" + girlTag + cardNameMap.get(key) +
                           "</TD>" + girlTag + strGiftRarity + "</TD>" + girlTag + cardNameMap.get(value.evolId) +
                           "</TD>" + girlTag + exTxt + cardGiftMap.get(value.evolId).count +"枚</TD></TR>\n");
     }
@@ -156,14 +164,14 @@ function getCard(index){
   }
 
   var strRarity = "";
-  if( localStorage["EX-HR"] != "0" ) /// HR指定なら、手持ちからはHR/SRを調べる
+  if( _checkHR ) /// HR指定なら、手持ちからはHR/SRを調べる
     strRarity ="rarities=HIGH_RARE&rarities=S_RARE&";
-  if( localStorage["EX-SR"] != "0" ){ /// SR指定なら、手持ちからはSR/SSRを調べる
-    if(localStorage["EX-HR"] == "0" ) strRarity = "rarities=S_RARE&";
+  if( _checkSR ){ /// SR指定なら、手持ちからはSR/SSRを調べる
+    if( !_checkHR ) strRarity = "rarities=S_RARE&";
     strRarity = strRarity + "rarities=SS_RARE&";
   }
-  if( localStorage["EX-SSR"]  != "0" ){ /// SSR指定なら、手持ちからはSSR/URを調べる
-    if(localStorage["EX-SR"] == "0" ) strRarity = strRarity + "rarities=SS_RARE&";
+  if( _checkSSR ){ /// SSR指定なら、手持ちからはSSR/URを調べる
+    if( !_checkSR ) strRarity = strRarity + "rarities=SS_RARE&";
     strRarity = strRarity + "rarities=U_RARE&";
   }
   /// 手持ちカードから対象を取得する
@@ -222,12 +230,12 @@ function getGift(index){
   }
 
   var strRarity = "";
-  if( localStorage["EX-HR"] != "0" ) strRarity ="4";
-  if( localStorage["EX-SR"] != "0" ){
+  if( _checkHR ) strRarity ="4";
+  if( _checkSR ){
     if(strRarity != "") strRarity = strRarity + "%2c";
     strRarity = strRarity + "5";
   }
-  if( localStorage["EX-SSR"] != "0" ){
+  if( _checkSSR ){
     if(strRarity != "") strRarity = strRarity + "%2c";
     strRarity = strRarity + "6";
   }
@@ -246,15 +254,22 @@ function getGift(index){
   */
 function getSRCards() {
 
+  clearSRData();
+
   //初期化されていなければ、初期化する
   if(null == localStorage["EX-HR"])   localStorage["EX-HR"]   = 0;
   if(null == localStorage["EX-SR"])   localStorage["EX-SR"]   = 1;
   if(null == localStorage["EX-SSR"])  localStorage["EX-SSR"]  = 1;
 
+  //処理中のストレージ変更に対処するため、メンバ変数化
+  _checkHR  = ( localStorage["EX-HR"]  != "0" );
+  _checkSR  = ( localStorage["EX-SR"]  != "0" );
+  _checkSSR = ( localStorage["EX-SSR"] != "0" );
+
   var strData = "";
-  if( localStorage["EX-HR"]  != "0" ) strData = "HR, ";
-  if( localStorage["EX-SR"]  != "0" ) strData = strData + "SR, ";
-  if( localStorage["EX-SSR"] != "0" ) strData = strData + "SSR";
+  if( _checkHR  ) strData = "HR, ";
+  if( _checkSR  ) strData = strData + "SR, ";
+  if( _checkSSR ) strData = strData + "SSR";
 
   if(strData == ""){
      alert("選択されていません。処理を終了します");
@@ -264,7 +279,6 @@ function getSRCards() {
   strData = strData + "のガールの進展可能確認をしますか？";
 
   if(confirm(strData)){
-    clearSRData();
     getGift(1);
   }else{
     alert("処理を終了します");
