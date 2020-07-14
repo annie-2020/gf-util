@@ -8,7 +8,7 @@
 ## ダウンロード
 
  1. GITHUBの使い方
-	1. GITHUBの対象ページに移動します (2020/7/13 時点。ver 0.2.1.0)
+	1. GITHUBの対象ページに移動します (2020/7/14 時点。ver 0.2.1.0)
 		- [対象ページ](https://github.com/annie-2020/gf-util/releases/tag/0.2.1.0)
 	2. 「Source Coude(zip)」 をクリックします
 		- ![download](./images/download.png "download")
