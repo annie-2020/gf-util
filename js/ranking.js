@@ -51,9 +51,27 @@ function createRankHTML(array , ranking) {
   * @version 0.1
   */
 function getDisplayData(eventId , eventName , ranking){
-  var pageNum = Math.ceil( ranking / 10);    ///< 与えられた順位が表示されるページ。「1～10」→ 1になるように小数点切り上げ。
-  var url = "https://vcard.ameba.jp/" + eventName + "/ajax/ranking-search?eventId=" + eventId + "&page=" + pageNum;  ///< JSONを取得するURL
+  ///< 与えられた順位が表示されるページ。「1～10」→ 1になるように小数点切り上げ。
+  var eventPageStr = "?eventId=" + eventId + "&page=" + Math.ceil( ranking / 10);
 
+//  var url = "https://vcard.ameba.jp/" + eventName + "/ajax/ranking-search" + eventPageStr;  ///< JSONを取得するURL
+  var url = "https://vcard.ameba.jp/";
+  switch(eventName){
+   case _eventName[0]: ///< レイド
+     url = url + eventName + "/ajax/ranking-search" + eventPageStr;  ///< JSONを取得するURL
+     break;
+   case _eventName[2]: ///< フムフム
+     url = url + eventName + "/ranking" + eventPageStr;    ///< JSONを取得するURL
+     break;
+   case _eventName[3]: ///< 対抗戦
+   case _eventName[1]: ///< ハンターズ
+   case _eventName[4]: ///< カリスマ
+     url = url + eventName + "/ranking/ajax/user" + eventPageStr;              ///< JSONを取得するURL
+     break;
+   default:
+    alert("一致する情報がありません");
+    return;
+  }
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function( ) {  ///< HTTP アクセス状態変更イベント
     if ( xhr.readyState == 4 && xhr.status == 200) {
