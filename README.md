@@ -8,6 +8,7 @@
  * find the card that you can do "ptogress" in your gift (HR or SR or SSR) and the girls. 
  * "graduate" the card in your gift(N or HN or R).
  * display specified rank's point.
+ * On "HUNTERS" , display all the enemy team member.
 
 # Requirement
  

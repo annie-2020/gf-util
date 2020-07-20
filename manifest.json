@@ -1,6 +1,6 @@
 {
     "name": "GF Utility",
-    "version": "0.2.0.0",
+    "version": "0.3.0.0",
 
     "description": "GF(Beta) Utility Tool",
 
@@ -13,7 +13,8 @@
       "scripts":[
         "js/ranking.js",
         "js/srClean.js",
-        "js/sellHN.js"
+        "js/sellHN.js",
+        "js/hunters.js"
       ],
       "persistent": false
     },

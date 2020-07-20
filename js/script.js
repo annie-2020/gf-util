@@ -22,6 +22,14 @@ window.addEventListener('load',()=>{  ///< 拡張機能ポップアップペー�
       window.close();
     });
 
+    /// Huntersボタンが押されたとき
+    document.querySelector('button.Hunter').addEventListener('click',()=>{
+      var bgWindow = chrome.runtime.getBackgroundPage(function( backgroundPage ){
+        backgroundPage.getHuntersTeam();  ///< ハンターズ敵チーム調査
+      });
+      window.close();
+    });
+
     /// Rankボタンが押されたとき
     document.querySelector('button.Rank').addEventListener('click',()=>{
       var bgWindow = chrome.runtime.getBackgroundPage(function( backgroundPage ){

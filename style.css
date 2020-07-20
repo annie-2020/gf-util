@@ -68,3 +68,18 @@ td.rankSame{
 td.rank{
     background: #99f;
 }
+
+td.odd{
+    color: white;
+    background: #336;
+}
+
+td.even{
+    color: white;
+    background: #633;
+}
+
+td.team{
+    color: white;
+    background: #666;
+}
