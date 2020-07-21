@@ -74,7 +74,7 @@ function createHunterEnemyHTML() {
   * @author annie
   * @version 0.3
   */
-function getDailyTeamData(index , eventId){
+function getDailyTeamData(index , eventId , dayNumber){
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function( ) {
     if ( xhr.readyState == 4 && xhr.status == 200) {         ///< 情報取得完了
@@ -100,7 +100,7 @@ function getDailyTeamData(index , eventId){
       }
 
       if(index*10 < myArr.data.rankings.allCount ){ ///< まだ存在する場合、同関数を呼び出す
-        getDailyTeamData(index+1 , eventId);
+        getDailyTeamData(index+1 , eventId , dayNumber);
       }else{
         if(partyEstablishedUsereMap.length == 0){
           alert("情報が取得できませんでした。処理を終了します" );
@@ -113,7 +113,7 @@ function getDailyTeamData(index , eventId){
 
 
   /// イベントIDからデイリーランキングの情報を取得する
-  var url = 'https://vcard.ameba.jp/raidwar/ranking/ajax/team?num=1&eventId='+ eventId + '&page=' + index;
+  var url = 'https://vcard.ameba.jp/raidwar/ranking/ajax/team?&eventId='+ eventId + '&page=' + index + '&num=' + dayNumber;
   xhr.open( 'GET', url, true ) ;
   xhr.send( ) ;
 }
@@ -141,9 +141,13 @@ function getEventNumber(){
         var urlSprit = tab.url.split(/[\?\/\&]/);  ///< 「?」「/」「&」でURLを分割する。フォルダ名とファイル名、引数で分割される
         var eventId = "";
         var hunters = false;
+        var dayNumber = "1";
         for(split of urlSprit){
           if(split == "raidwar"){
             hunters = true;
+          }
+          if(split.indexOf("num=") != -1){
+            dayNumber = split.substr("num".length + 1);
           }
           if(eventId == ""){
             if(split.indexOf(_eventId) != -1){
@@ -151,8 +155,9 @@ function getEventNumber(){
             }
           }
         }
-        if(hunters && eventId != ""){
-          getDailyTeamData(1 , eventId);
+        if(hunters && eventId != "" && dayNumber != "" ){
+          alert( dayNumber + "日目の相手チーム一覧を表示します");
+          getDailyTeamData(1 , eventId , dayNumber);
           return;
         }
       }
