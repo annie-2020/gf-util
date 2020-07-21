@@ -50,9 +50,12 @@
 ## ハンターズ中全相手チームメンバ表示
 **作った理由：知りたかった**  
 
- 1. 「vcard.ameba.jp/raidwar?eventId=91」のように、eventIdと「raidwar」がURLにあるページを表示してください
-	* ページ内ソースを解析しないように、URLだけで判定するようにしたため。
- 1. メニュー「ハンターズ相手チーム」を押下してください
+ 1. ハンターズのデイリーページを表示します
+	* URLは「https://vcard.ameba.jp/raidwar/team-ranking?eventId=XX&num=Y」のようになる
+	* num=Y から、何日目の相手チームか、eventIdから対象イベントIDを取得する
+ 1. メニューの「ハンターズ敵チーム」を押下してください
+ 1. 「Y日目の相手チームを表示します」とダイアログが表示されるので、OKを押す
+   ![hunters](./images/huntersDiag.png "hunters")
  1. 画面に結果が表示されます
 
 ## イベント中ランキング表示
