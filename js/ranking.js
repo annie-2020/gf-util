@@ -1,7 +1,7 @@
  /**
   * 指定された順位のポイント表示
   * @author annie
-  * @version 0.1
+  * @version 0.3
   */
 
 const _eventName = [ "raid" , "raidwar" , "story" , "clubcup" , "championship"];
@@ -58,15 +58,19 @@ function getDisplayData(eventId , eventName , ranking){
   var url = "https://vcard.ameba.jp/";
   switch(eventName){
    case _eventName[0]: ///< レイド
-     url = url + eventName + "/ajax/ranking-search" + eventPageStr;  ///< JSONを取得するURL
+     url = url + eventName + "/ajax/ranking-search" + eventPageStr; ///< JSONを取得するURL
      break;
    case _eventName[2]: ///< フムフム
-     url = url + eventName + "/ranking" + eventPageStr;    ///< JSONを取得するURL
+     url = url + eventName + "/ranking" + eventPageStr;             ///< JSONを取得するURL
      break;
    case _eventName[3]: ///< 対抗戦
    case _eventName[1]: ///< ハンターズ
+     url = url + eventName + "/ranking/ajax/user" + eventPageStr;   ///< JSONを取得するURL
+     break;
    case _eventName[4]: ///< カリスマ
-     url = url + eventName + "/ranking/ajax/user" + eventPageStr;              ///< JSONを取得するURL
+     url = url + eventName + "/ranking/ajax/paging" + eventPageStr + "&rankingType=1";       ///< JSONを取得するURL
+     //rankingType=1 が何を指すのか不明。3まで存在しているが、取れる情報から何をしているかわからない。
+     //https://vcard.ameba.jp/championship/ranking/ajax/paging?rankingType=1&page=2
      break;
    default:
     alert("一致する情報がありません");
@@ -77,20 +81,35 @@ function getDisplayData(eventId , eventName , ranking){
     if ( xhr.readyState == 4 && xhr.status == 200) {
       var myArr = JSON.parse(xhr.responseText);
 
-      if(0 < myArr.data.rankings.list.length ){
-        var array = [];
-        /// JSONから必要な情報を取得する
-        for(element of myArr.data.rankings.list ){
-          var obj = new Object();
-          obj.clubName = element.clubName;      ///< 部活名
-          obj.point = element.point;            ///< 獲得ポイント
-          obj.rank = element.rank;              ///< 順位
-          obj.userId = element.userId;          ///< ユーザID
-          obj.userName = element.userName;      ///< ユーザ名
-          array.push(obj);
+      var array = [];
+      if(eventName == _eventName[4]){   ///< カリスマだけ、取得できる情報の内容が異なる
+        if(0 < myArr.data.list.length ){
+          /// JSONから必要な情報を取得する
+          for(element of myArr.data.list ){
+            var obj = new Object();
+            obj.clubName = element.clubName;      ///< 部活名
+            obj.point = element.point;            ///< 獲得ポイント
+            obj.rank = element.rank;              ///< 順位
+            obj.userId = element.userId;          ///< ユーザID
+            obj.userName = element.name;          ///< ユーザ名
+            array.push(obj);
+          }
         }
-        createRankHTML(array , ranking);
+      }else{
+        if(0 < myArr.data.rankings.list.length ){
+          /// JSONから必要な情報を取得する
+          for(element of myArr.data.rankings.list ){
+            var obj = new Object();
+            obj.clubName = element.clubName;      ///< 部活名
+            obj.point = element.point;            ///< 獲得ポイント
+            obj.rank = element.rank;              ///< 順位
+            obj.userId = element.userId;          ///< ユーザID
+            obj.userName = element.userName;      ///< ユーザ名
+            array.push(obj);
+          }
+        }
       }
+      createRankHTML(array , ranking);
     }
   }
 
@@ -126,11 +145,13 @@ function getEventParam( url , ranking){
     }
   }
 
-  if(eventName != "" && eventId != ""){
-    getDisplayData(eventId , eventName , ranking);
+  /// カリスマだけ、eventIDが割り当てられない
+  if(eventName != "" && ( eventName == _eventName[4] || eventId != "" ) ){
+      getDisplayData(eventId , eventName , ranking);
+      return true;
   }else{
     /// エラー時の処理
-    alert("イベント名( " + eventName + " )かイベントID( " + eventId + " )が取得できませんでした");
+    return false;
   }
 }
 
@@ -143,13 +164,13 @@ function getEventParam( url , ranking){
 function getEvent(ranking){
   chrome.tabs.query({}, function (tabs) {    ///< 全タブを取得する
     for (tab of tabs) {
-      if(tab.url.indexOf("vcard") != -1 && tab.url.indexOf(_eventId) != -1){  // URLに「vcard」かつ「eventId」が入っている個所を確認する
-        getEventParam(tab.url , ranking);
-        return;
+      if(tab.url.indexOf("vcard") != -1){  // URLに「vcard」かつ「eventId」が入っている個所を確認する
+        if( getEventParam(tab.url , ranking))
+          return;
       }
     }
     /// エラー時の処理
-    alert("イベントページが見つかりません。URLに\"eventId\"が含まれているか確認してください");
+    alert("イベントページが見つかりません。カリスマ以外の場合、URLに\"eventId\"が含まれているかも確認してください");
   });
 }
 
