@@ -71,7 +71,6 @@ function getDisplayData(eventId , eventName , ranking){
      url = url + eventName + "/ranking/ajax/paging" + eventPageStr + "&rankingType=1";       ///< JSONを取得するURL
      //rankingType=1 が何を指すのか不明。3まで存在しているが、取れる情報から何をしているかわからない。
      //https://vcard.ameba.jp/championship/ranking/ajax/paging?rankingType=1&page=2
-     alert(url);
      break;
    default:
     alert("一致する情報がありません");
