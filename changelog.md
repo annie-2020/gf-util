@@ -1,6 +1,8 @@
 # 更新履歴
 
  - v0.3.1.0
+	- 2020/08/03
+		- [CHROMEの拡張機能](https://chrome.google.com/webstore/detail/gf-utility/nffeeheaccmggkehefnogfaekoaagppb/related?hl=ja)として登録
 	- 2020/07/28
 	- 不具合修正
 		- 「カリスマ」で正しく指定順位が表示されなかった不具合を修正

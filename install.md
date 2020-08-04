@@ -1,9 +1,10 @@
 # インストール方法
 
  本ツールはChromeブラウザの拡張機能として動作します  
- しかし、拡張機能としてのストア登録は予定していません  
- デベロッパー機能から、コードレベルの登録をお願いします  
- ※ [注意事項](README.md)参照  
+ 拡張機能ページからのダウンロードおよびインストールは[こちら](https://chrome.google.com/webstore/detail/gf-utility/nffeeheaccmggkehefnogfaekoaagppb/related?hl=ja)から。
+
+ デベロッパー機能から、コードレベルの登録については、本ページで説明します。  
+ ※ [注意事項](warning.md)参照  
 
 ## ダウンロード
 
